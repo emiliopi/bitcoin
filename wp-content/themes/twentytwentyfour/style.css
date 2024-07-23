@@ -1,0 +1,157 @@
+/*
+Theme Name: Twenty Twenty-Four
+Theme URI: https://wordpress.org/themes/twentytwentyfour/
+Author: the WordPress team
+Author URI: https://wordpress.org
+Description: Twenty Twenty-Four is designed to be flexible, versatile and applicable to any website. Its collection of templates and patterns tailor to different needs, such as presenting a business, blogging and writing or showcasing work. A multitude of possibilities open up with just a few adjustments to color and typography. Twenty Twenty-Four comes with style variations and full page designs to help speed up the site building process, is fully compatible with the site editor, and takes advantage of new design tools introduced in WordPress 6.4.
+Requires at least: 6.4
+Tested up to: 6.6
+Requires PHP: 7.0
+Version: 1.2
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: twentytwentyfour
+Tags: one-column, custom-colors, custom-menu, custom-logo, editor-style, featured-images, full-site-editing, block-patterns, rtl-language-support, sticky-post, threaded-comments, translation-ready, wide-blocks, block-styles, style-variations, accessibility-ready, blog, portfolio, news
+*/
+
+.books-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.book {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-thumbnail {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.book-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.book h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.book-description {
+    margin-bottom: 10px;
+    max-height: 100px; /* Limita la altura máxima */
+    overflow-y: auto; /* Añade scroll vertical si es necesario */
+    text-overflow: ellipsis; /* Añade puntos suspensivos al final */
+    padding-right: 5px; /* Espacio para el scroll */
+}
+
+.book-year {
+    font-size: 0.9em;
+    color: #777;
+}
+
+@media (max-width: 768px) {
+    .book {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .book {
+        width: 30%;
+    }
+}
+
+.widget-bitcoin_price_widget {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.widget-bitcoin_price_widget .widget-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.bitcoin-price {
+    font-size: 1.5em;
+    color: #28a745;
+}
+
+@media (max-width: 768px) {
+    .widget-bitcoin_price_widget {
+        padding: 10px;
+    }
+
+    .widget-bitcoin_price_widget .widget-title {
+        font-size: 1em;
+    }
+
+    .bitcoin-price {
+        font-size: 1.2em;
+    }
+}
+
+.book-single {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.book-thumbnail {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.book-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.book-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.book-description {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.book-year {
+    font-size: 1em;
+    color: #777;
+    text-align: center;
+}
+
+/* Añadir estilos para header y footer si es necesario */
+.site-header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.site-footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+
