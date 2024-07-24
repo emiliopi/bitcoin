@@ -266,11 +266,21 @@ function create_books_cpt()
 }
 add_action('init', 'create_books_cpt', 0);
 
-// Registrar el Shortcode
-function display_books_shortcode() {
+function display_books_shortcode($atts) {
+    // Extraer los atributos del shortcode
+    $atts = shortcode_atts(array(
+        'paged' => 1,
+    ), $atts);
+
+    $paged = (int) $atts['paged'];
+
+    // Definir el número de libros por página
+    $books_per_page = 10; // Puedes ajustar esto si lo deseas
+
     $args = array(
         'post_type' => 'books',
-        'posts_per_page' => -1
+        'posts_per_page' => $books_per_page,
+        'paged' => $paged
     );
 
     $books_query = new WP_Query($args);
@@ -290,7 +300,7 @@ function display_books_shortcode() {
             $ano_de_publicacion = get_field('ano_de_publicacion');
 
             echo '<div class="book">';
-            echo '<h2><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></h2>'; // Envolver el título en un enlace
+            echo '<h4 class="book-title"><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></h4>'; // Envolver el título en un enlace
             if ($imagen) {
                 echo '<div class="book-thumbnail"><a href="' . esc_url($link) . '"><img src="' . esc_url($imagen['url']) . '" alt="' . esc_attr($imagen['alt']) . '" class="book-image" /></a></div>'; // Envolver la imagen en un enlace
             }
@@ -303,9 +313,9 @@ function display_books_shortcode() {
             echo '</div>';
         }
 
-        echo '</div>';
+        echo '</div>'; // Cierre del contenedor books-list
     } else {
-        echo 'No books found.';
+        echo '<p>No books found.</p>';
     }
 
     wp_reset_postdata();
@@ -313,6 +323,8 @@ function display_books_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('display_books', 'display_books_shortcode');
+
+
 
 function my_theme_setup() {
     register_nav_menus(array(
@@ -387,3 +399,40 @@ function theme_enqueue_styles() {
     wp_enqueue_style('style', get_stylesheet_uri());
 }
 add_action('wp_enqueue_scripts', 'theme_enqueue_styles');
+
+function twentytwentyfour_register_sidebar() {
+    register_sidebar(array(
+        'name' => __('Sidebar Principal', 'twentytwentyfour'),
+        'id' => 'main-sidebar',
+        'description' => __('Sidebar principal para el tema Twenty Twenty-Four', 'twentytwentyfour'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2 class="widget-title">',
+        'after_title' => '</h2>',
+    ));
+}
+add_action('widgets_init', 'twentytwentyfour_register_sidebar');
+
+function twentytwentyfour_register_block_patterns() {
+    if (function_exists('register_block_pattern_category')) {
+        register_block_pattern_category(
+            'twentytwentyfour-template-parts',
+            array('label' => __('Template Parts', 'twentytwentyfour'))
+        );
+    }
+}
+
+add_action('init', 'twentytwentyfour_register_block_patterns');
+
+function enqueue_slick_slider() {
+    // Enqueue Slick Slider CSS
+    wp_enqueue_style('slick-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
+    wp_enqueue_style('slick-theme-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
+
+    // Enqueue Slick Slider JS
+    wp_enqueue_script('slick-js', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js', array('jquery'), null, true);
+
+    // Enqueue Custom JS
+    wp_enqueue_script('custom-slider-js', get_template_directory_uri() . '/js/custom-slider.js', array('jquery', 'slick-js'), null, true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_slick_slider');
