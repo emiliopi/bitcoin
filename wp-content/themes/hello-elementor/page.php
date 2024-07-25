@@ -11,11 +11,11 @@
                     get_template_part( 'template-parts/content', 'page' );
                 endwhile;
                 ?>
-            </main><!-- #main -->
-        </div><!-- #primary -->
+            </main>
+        </div>
 
         <?php get_template_part('aside'); ?>
-    </div><!-- .content-container -->
-</div><!-- .content-wrapper -->
+    </div>
+</div>
 
 <?php get_footer(); ?>

@@ -121,15 +121,15 @@ function display_books_shortcode($atts)
 			$books_query->the_post();
 
 			$title = get_the_title();
-			$link = get_permalink(); // Obtener el enlace al post individual
+			$link = get_permalink();
 			$descripcion_breve = get_field('descripcion_breve');
 			$imagen = get_field('imagen');
 			$ano_de_publicacion = get_field('ano_de_publicacion');
 
 			echo '<div class="book">';
-			echo '<h4 class="book-title"><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></h4>'; // Envolver el título en un enlace
+			echo '<h4 class="book-title"><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></h4>';
 			if ($imagen) {
-				echo '<div class="book-thumbnail"><a href="' . esc_url($link) . '"><img src="' . esc_url($imagen['url']) . '" alt="' . esc_attr($imagen['alt']) . '" class="book-image" /></a></div>'; // Envolver la imagen en un enlace
+				echo '<div class="book-thumbnail"><a href="' . esc_url($link) . '"><img src="' . esc_url($imagen['url']) . '" alt="' . esc_attr($imagen['alt']) . '" class="book-image" /></a></div>';
 			}
 			if ($descripcion_breve) {
 				echo '<div class="book-description">' . esc_html($descripcion_breve) . '</div>';
@@ -140,7 +140,7 @@ function display_books_shortcode($atts)
 			echo '</div>';
 		}
 
-		echo '</div>'; // Cierre del contenedor books-list
+		echo '</div>';
 	} else {
 		echo '<p>No books found.</p>';
 	}
@@ -165,7 +165,6 @@ class Bitcoin_Price_Widget extends WP_Widget {
 		echo $args['before_widget'];
 		echo $args['before_title'] . 'Bitcoin Price' . $args['after_title'];
 	
-		// Obtén el precio de Bitcoin usando la API
 		$response = wp_remote_get('https://mempool.space/api/v1/prices');
 		if (is_wp_error($response)) {
 			echo 'Unable to retrieve Bitcoin price.';
@@ -176,7 +175,6 @@ class Bitcoin_Price_Widget extends WP_Widget {
 			if (!empty($data)) {
 				echo '<div class="bitcoin-prices">';
 				
-				// Itera sobre el array de datos
 				foreach ($data as $currency => $value) {
 					echo '<div class="bitcoin-price">' . esc_html($currency) . ' $' . number_format($value) . '</div>';
 				}

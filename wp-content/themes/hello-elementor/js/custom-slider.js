@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
     $('.books-list').slick({
-        slidesToShow: 3, // Número de libros a mostrar en una vista
+        slidesToShow: 3,
         slidesToScroll: 1,
         infinite: false,
         dots: true,

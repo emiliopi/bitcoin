@@ -3,10 +3,10 @@
 /**
  * Template for displaying single books.
  *
- * @package Twenty_Twenty_Four
+ * @package
  */
 
-get_header(); // Incluye el encabezado del tema
+get_header();
 ?>
 
 <div class="content-container">
@@ -52,5 +52,5 @@ get_header(); // Incluye el encabezado del tema
 </div>
 
 
-<?php get_footer(); // Incluye el pie de página del tema 
+<?php get_footer();
 ?>
