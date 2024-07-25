@@ -8,3 +8,7 @@ Pasos para cargar la base de datos al contenedor
 
 4- mysql -u wordpress -p wordpress < /backup.sql
 
+Se ocupo el tema hello-elementor y hello-theme-child-master
+
+y el plugin ACF para realizar la carga de los libros
+
