@@ -1,0 +1,274 @@
+/*
+Theme Name: Hello Elementor Child
+Theme URI: https://github.com/elementor/hello-theme-child/
+Description: Hello Elementor Child is a child theme of Hello Elementor, created by Elementor team
+Author: Elementor Team
+Author URI: https://elementor.com/
+Template: hello-elementor
+Version: 2.0.0
+Text Domain: hello-elementor-child
+License: GNU General Public License v3 or later.
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready
+*/
+
+/* Add your custom styles here */
+
+.books-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between elements */
+  padding: 20px;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-sizing: border-box;
+  flex: 1 1 calc(33.333% - 20px); /* Base size adjustment for the book */
+  margin: 10px;
+  min-height: 300px;
+}
+
+.book-thumbnail {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.book-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.book-title {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.book-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 1.5;
+  max-height: 5.5em;
+  margin-bottom: 10px;
+  font-size: smaller;
+}
+
+.book-year {
+  font-weight: bold;
+  margin-top: auto;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .book {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .book {
+    flex: 1 1 100%;
+  }
+}
+
+.bitcoin-price-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.bitcoin-price {
+  flex: 1 1 calc(50% - 10px);
+  box-sizing: border-box;
+  margin: 5px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .bitcoin-price {
+    flex: 1 1 100%;
+  }
+}
+
+.container-single {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.book-single {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+}
+
+.book-content-single {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+}
+
+.book-thumbnail-single {
+  flex: 1;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.book-image-single {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-details-single {
+  flex: 2;
+}
+
+.book-title-single {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.book-description-single {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.book-year-single {
+  font-size: 1em;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .book-content-single {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .book-thumbnail-single,
+  .book-details-single {
+    max-width: 100%;
+  }
+
+  .book-title-single {
+    text-align: center;
+  }
+
+  .book-year-single {
+    text-align: center;
+  }
+}
+
+.sidebar {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-left: 1px solid #e1e1e1;
+}
+
+.widget {
+  margin-bottom: 20px;
+}
+
+.widget-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.widget ul {
+  list-style: none;
+  padding: 0;
+}
+
+.widget ul li {
+  margin-bottom: 10px;
+}
+
+.widget ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.widget ul li a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .content-area,
+  .sidebar {
+    width: 100%;
+    float: none;
+  }
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 90%;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+#primary {
+  flex: 1;
+  min-width: 70%;
+}
+
+#secondary {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.widget-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #primary,
+  #secondary {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .widget-content-wrapper {
+    width: 100%;
+    text-align: center;
+  }
+}

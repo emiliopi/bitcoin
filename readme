@@ -1,0 +1,10 @@
+Pasos para cargar la base de datos al contenedor
+
+1-  docker-compose up
+
+2- docker cp backup.sql wordpress-books-bitcoin-widget-db-1:/backup.sql
+
+3- docker exec -it wordpress-books-bitcoin-widget-db-1 bash
+
+4- mysql -u wordpress -p wordpress < /backup.sql
+
