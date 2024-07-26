@@ -17,15 +17,25 @@ get_header();
                 if (have_posts()) :
                     while (have_posts()) : the_post();
                         $title = get_the_title();
-                        $descripcion_breve = get_field('descripcion_breve');
-                        $imagen = get_field('imagen');
-                        $ano_de_publicacion = get_field('ano_de_publicacion');
+                        $descripcion_breve = get_post_meta(get_the_ID(), '_books_short_description', true);
+                        $imagen = get_post_meta(get_the_ID(), '_books_image', true);
+                        $ano_de_publicacion = get_post_meta(get_the_ID(), '_books_year', true);
                 ?>
                         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                             <div class="book-content-single">
                                 <?php if ($imagen) : ?>
                                     <div class="book-thumbnail-single">
-                                        <img src="<?php echo esc_url($imagen['url']); ?>" alt="<?php echo esc_attr($imagen['alt']); ?>" class="book-image-single" />
+                                        <?php
+                                        // Verificar si $imagen es una URL o un array
+                                        if (is_array($imagen)) {
+                                            $imagen_url = esc_url($imagen['url']);
+                                            $imagen_alt = esc_attr($imagen['alt']);
+                                        } else {
+                                            $imagen_url = esc_url($imagen);
+                                            $imagen_alt = esc_attr($title);
+                                        }
+                                        ?>
+                                        <img src="<?php echo $imagen_url; ?>" alt="<?php echo $imagen_alt; ?>" class="book-image-single" />
                                     </div>
                                 <?php endif; ?>
                                 <div class="book-details-single">
@@ -51,6 +61,4 @@ get_header();
     <?php get_template_part('aside'); ?>
 </div>
 
-
-<?php get_footer();
-?>
+<?php get_footer(); ?>

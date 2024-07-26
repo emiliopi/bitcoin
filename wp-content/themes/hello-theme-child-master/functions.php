@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Theme functions and definitions.
  *
@@ -10,18 +11,19 @@
  * @package HelloElementorChild
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.0' );
+define('HELLO_ELEMENTOR_CHILD_VERSION', '2.0.0');
 
 /**
  * Load child theme scripts & styles.
  *
  * @return void
  */
-function hello_elementor_child_scripts_styles() {
+function hello_elementor_child_scripts_styles()
+{
 
 	wp_enqueue_style(
 		'hello-elementor-child-style',
@@ -31,66 +33,134 @@ function hello_elementor_child_scripts_styles() {
 		],
 		HELLO_ELEMENTOR_CHILD_VERSION
 	);
-
 }
-add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
+add_action('wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20);
 
-// Registrar el Custom Post Type "Books"
-function create_books_cpt()
+function create_books_post_type()
 {
-	$labels = array(
-		'name' => _x('Books', 'Post Type General Name', 'textdomain'),
-		'singular_name' => _x('Book', 'Post Type Singular Name', 'textdomain'),
-		'menu_name' => _x('Books', 'Admin Menu text', 'textdomain'),
-		'name_admin_bar' => _x('Book', 'Add New on Toolbar', 'textdomain'),
-		'archives' => __('Book Archives', 'textdomain'),
-		'attributes' => __('Book Attributes', 'textdomain'),
-		'parent_item_colon' => __('Parent Book:', 'textdomain'),
-		'all_items' => __('All Books', 'textdomain'),
-		'add_new_item' => __('Add New Book', 'textdomain'),
-		'add_new' => __('Add New', 'textdomain'),
-		'new_item' => __('New Book', 'textdomain'),
-		'edit_item' => __('Edit Book', 'textdomain'),
-		'update_item' => __('Update Book', 'textdomain'),
-		'view_item' => __('View Book', 'textdomain'),
-		'view_items' => __('View Books', 'textdomain'),
-		'search_items' => __('Search Book', 'textdomain'),
-		'not_found' => __('Not found', 'textdomain'),
-		'not_found_in_trash' => __('Not found in Trash', 'textdomain'),
-		'featured_image' => __('Featured Image', 'textdomain'),
-		'set_featured_image' => __('Set featured image', 'textdomain'),
-		'remove_featured_image' => __('Remove featured image', 'textdomain'),
-		'use_featured_image' => __('Use as featured image', 'textdomain'),
-		'insert_into_item' => __('Insert into book', 'textdomain'),
-		'uploaded_to_this_item' => __('Uploaded to this book', 'textdomain'),
-		'items_list' => __('Books list', 'textdomain'),
-		'items_list_navigation' => __('Books list navigation', 'textdomain'),
-		'filter_items_list' => __('Filter books list', 'textdomain'),
+	register_post_type(
+		'books',
+		array(
+			'labels' => array(
+				'name' => __('Books'),
+				'singular_name' => __('Book')
+			),
+			'public' => true,
+			'has_archive' => true,
+			'supports' => array('title', 'editor', 'thumbnail'),
+			'menu_position' => 5,
+			'menu_icon' => 'dashicons-book',
+			'rewrite' => array('slug' => 'books'),
+		)
 	);
-	$args = array(
-		'label' => __('Book', 'textdomain'),
-		'description' => __('Custom Post Type for Books', 'textdomain'),
-		'labels' => $labels,
-		'menu_icon' => 'dashicons-book',
-		'supports' => array('title', 'editor', 'thumbnail'),
-		'taxonomies' => array('category', 'post_tag'),
-		'public' => true,
-		'show_ui' => true,
-		'show_in_menu' => true,
-		'menu_position' => 5,
-		'show_in_admin_bar' => true,
-		'show_in_nav_menus' => true,
-		'can_export' => true,
-		'has_archive' => true,
-		'hierarchical' => false,
-		'exclude_from_search' => false,
-		'show_in_rest' => true,
-		'publicly_queryable' => true,
-		'capability_type' => 'post',
-	);
-	register_post_type('books', $args);
 }
-add_action('init', 'create_books_cpt', 0);
+add_action('init', 'create_books_post_type');
+
+// Añadir campos personalizados
+function books_add_meta_boxes()
+{
+	add_meta_box('books_details', 'Book Details', 'books_meta_box_callback', 'books', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'books_add_meta_boxes');
+
+function books_meta_box_callback($post)
+{
+	// Agregar el nonce para la verificación de seguridad
+	wp_nonce_field('books_save_meta_box_data', 'books_meta_box_nonce');
+
+	// Obtener los valores actuales de los campos personalizados
+	$short_description = get_post_meta($post->ID, '_books_short_description', true);
+	$image = get_post_meta($post->ID, '_books_image', true);
+	$year = get_post_meta($post->ID, '_books_year', true);
+
+?>
+	<div class="books-meta-box">
+		<!-- Campo de descripción breve -->
+		<p>
+			<label for="books_short_description">Short Description</label>
+			<input type="text" id="books_short_description" name="books_short_description" value="<?php echo esc_attr($short_description); ?>" size="30" required/>
+		</p>
+
+		<!-- Campo de imagen -->
+		<p>
+			<label for="books_image">Image</label>
+			<input type="text" id="books_image" name="books_image" value="<?php echo esc_url($image); ?>" size="30" required/>
+			<button type="button" class="button button-secondary" id="books_image_button">Select Image</button>
+		<div id="books_image_preview">
+			<?php if ($image) : ?>
+				<img src="<?php echo esc_url($image); ?>" style="max-width: 100%; height: auto;" />
+			<?php endif; ?>
+		</div>
+		</p>
+
+		<!-- Campo de año de publicación -->
+		<p>
+			<label for="books_year">Publication Year</label>
+			<input type="text" id="books_year" name="books_year" value="<?php echo esc_attr($year); ?>" size="30" required/>
+		</p>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				var mediaUploader;
+
+				$('#books_image_button').click(function(e) {
+					e.preventDefault();
+
+					// Si el medidor ya está creado, abrirlo
+					if (mediaUploader) {
+						mediaUploader.open();
+						return;
+					}
+
+					// Crear el medidor
+					mediaUploader = wp.media({
+						title: 'Select Image',
+						button: {
+							text: 'Use this image'
+						},
+						multiple: false
+					});
+
+					// Cuando se selecciona una imagen
+					mediaUploader.on('select', function() {
+						var attachment = mediaUploader.state().get('selection').first().toJSON();
+						$('#books_image').val(attachment.url);
+						$('#books_image_preview').html('<img src="' + attachment.url + '" style="max-width: 100%; height: auto;" />');
+					});
+
+					// Abrir el medidor
+					mediaUploader.open();
+				});
+			});
+		</script>
+	</div>
+<?php
+}
+
+
+function books_save_meta_box_data($post_id)
+{
+	if (!isset($_POST['books_meta_box_nonce']) || !wp_verify_nonce($_POST['books_meta_box_nonce'], 'books_save_meta_box_data')) {
+		return;
+	}
+
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		return;
+	}
+
+	if (!current_user_can('edit_post', $post_id)) {
+		return;
+	}
+
+	$short_description = sanitize_text_field($_POST['books_short_description']);
+	$image = esc_url_raw($_POST['books_image']);
+	$year = sanitize_text_field($_POST['books_year']);
+
+	update_post_meta($post_id, '_books_short_description', $short_description);
+	update_post_meta($post_id, '_books_image', $image);
+	update_post_meta($post_id, '_books_year', $year);
+}
+add_action('save_post', 'books_save_meta_box_data');
 
 function display_books_shortcode($atts)
 {
@@ -122,24 +192,31 @@ function display_books_shortcode($atts)
 
 			$title = get_the_title();
 			$link = get_permalink();
-			$descripcion_breve = get_field('descripcion_breve');
-			$imagen = get_field('imagen');
-			$ano_de_publicacion = get_field('ano_de_publicacion');
+			$short_description = get_post_meta(get_the_ID(), '_books_short_description', true);
+			$image = get_post_meta(get_the_ID(), '_books_image', true);
+			$year = get_post_meta(get_the_ID(), '_books_year', true);
 
 			echo '<div class="book">';
 			echo '<h4 class="book-title"><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></h4>';
-			if ($imagen) {
-				echo '<div class="book-thumbnail"><a href="' . esc_url($link) . '"><img src="' . esc_url($imagen['url']) . '" alt="' . esc_attr($imagen['alt']) . '" class="book-image" /></a></div>';
+			if ($image) {
+				echo '<div class="book-thumbnail"><a href="' . esc_url($link) . '"><img src="' . esc_url($image) . '" alt="' . esc_attr($title) . '" class="book-image" /></a></div>';
 			}
-			if ($descripcion_breve) {
-				echo '<div class="book-description">' . esc_html($descripcion_breve) . '</div>';
+			if ($short_description) {
+				echo '<div class="book-description">' . esc_html($short_description) . '</div>';
 			}
-			if ($ano_de_publicacion) {
-				echo '<div class="book-year">Año de publicación: ' . esc_html($ano_de_publicacion) . '</div>';
+			if ($year) {
+				echo '<div class="book-year">Año de publicación: ' . esc_html($year) . '</div>';
 			}
 			echo '</div>';
 		}
 
+		echo '</div>';
+
+		// Añadir paginación
+		echo '<div class="pagination">';
+		echo paginate_links(array(
+			'total' => $books_query->max_num_pages
+		));
 		echo '</div>';
 	} else {
 		echo '<p>No books found.</p>';
@@ -151,60 +228,63 @@ function display_books_shortcode($atts)
 }
 add_shortcode('display_books', 'display_books_shortcode');
 
-class Bitcoin_Price_Widget extends WP_Widget {
 
-    public function __construct() {
-        parent::__construct(
-            'bitcoin_price_widget',
-            'Bitcoin Price Widget',
-            array('description' => 'Displays current Bitcoin price.')
-        );
-    }
+class Bitcoin_Price_Widget extends WP_Widget
+{
 
-    public function widget($args, $instance) {
+	public function __construct()
+	{
+		parent::__construct(
+			'bitcoin_price_widget',
+			'Bitcoin Price Widget',
+			array('description' => 'Displays current Bitcoin price.')
+		);
+	}
+
+	public function widget($args, $instance)
+	{
 		echo $args['before_widget'];
 		echo $args['before_title'] . 'Bitcoin Price' . $args['after_title'];
-	
+
 		$response = wp_remote_get('https://mempool.space/api/v1/prices');
 		if (is_wp_error($response)) {
 			echo 'Unable to retrieve Bitcoin price.';
 		} else {
 			$body = wp_remote_retrieve_body($response);
 			$data = json_decode($body, true);
-	
+
 			if (!empty($data)) {
 				echo '<div class="bitcoin-prices">';
-				
+
 				foreach ($data as $currency => $value) {
 					echo '<div class="bitcoin-price">' . esc_html($currency) . ' $' . number_format($value) . '</div>';
 				}
-				
+
 				echo '</div>';
 			} else {
 				echo 'Unable to retrieve Bitcoin price.';
 			}
 		}
-	
+
 		echo $args['after_widget'];
 	}
-	
-	
 }
 
-function register_custom_sidebar() {
-    register_sidebar(array(
-        'name' => 'Bitcoin Price Widget',
-        'id' => 'bitcoin_price_widget',
-        'before_widget' => '<div id="%1$s" class="widget %2$s">',
-        'after_widget' => '</div>',
-        'before_title' => '<h2 class="widget-title">',
-        'after_title' => '</h2>',
-    ));
+function register_custom_sidebar()
+{
+	register_sidebar(array(
+		'name' => 'Bitcoin Price Widget',
+		'id' => 'bitcoin_price_widget',
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<h2 class="widget-title">',
+		'after_title' => '</h2>',
+	));
 }
 
-add_action('widgets_init', function() {
-    register_widget('Bitcoin_Price_Widget');
-    register_custom_sidebar();
+add_action('widgets_init', function () {
+	register_widget('Bitcoin_Price_Widget');
+	register_custom_sidebar();
 });
 
 function theme_enqueue_styles()
@@ -226,4 +306,3 @@ function enqueue_slick_slider()
 	wp_enqueue_script('custom-slider-js', get_template_directory_uri() . '/js/custom-slider.js', array('jquery', 'slick-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'enqueue_slick_slider');
-

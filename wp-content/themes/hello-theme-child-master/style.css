@@ -272,3 +272,45 @@ Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, fe
     text-align: center;
   }
 }
+
+.books-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.book-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: calc(33.333% - 20px);
+  box-sizing: border-box;
+}
+
+.book-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.book-item h3 {
+  font-size: 1.25em;
+  margin: 10px 0;
+}
+
+.book-item p {
+  margin: 5px 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .book-item {
+      width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .book-item {
+      width: 100%;
+  }
+}
